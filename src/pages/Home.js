@@ -5,7 +5,8 @@ import {
     SafeAreaView,
     TextInput,
     Platform,
-    FlatList
+    FlatList,
+    StatusBar
 } from 'react-native';
 import { Button } from '../components/Button';
 import { SkillCard } from '../components/SkillCard';
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#121015',
-        paddingVertical: 70,
+        paddingVertical: Platform.OS === 'ios' ? 70 : 20,
         paddingHorizontal: 30
     },
     title: {
