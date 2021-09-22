@@ -11,13 +11,23 @@ import {
 import { Button } from '../components/Button';
 import { SkillCard } from '../components/SkillCard';
 
+interface SkillData {
+    id: string;
+    name: string;
+}
+
 export default function Home() {
     const [newSkill, setNewSkill] = useState('');
-    const [mySkills, setMySkills] = useState([]);
+    const [mySkills, setMySkills] = useState<SkillData[]>([]);
     const [greetings, setGreeting] = useState('');
 
     function handleAddNewSkill() {
-        setMySkills(oldState => [...oldState, newSkill]);
+        const data = {
+            id: String(new Date().getTime()),
+            name: newSkill
+        };
+
+        setMySkills(oldState => [...oldState, data]);
     }
 
     useEffect(() => {
@@ -26,11 +36,11 @@ export default function Home() {
         if (currentHour > 6 && currentHour < 12) {
             setGreeting('Good morning');
         } else if (currentHour >= 12 && currentHour < 18) {
-            setGreeting('Good afternoon')
+            setGreeting('Good afternoon');
         } else if (currentHour > 18 && currentHour < 0) {
-            setGreeting('Good evening')
+            setGreeting('Good evening');
         } else {
-            setGreeting('Good night')
+            setGreeting('Good night');
         }
 
     }, [mySkills])
@@ -50,7 +60,10 @@ export default function Home() {
                 onChangeText={setNewSkill}
             />
 
-            <Button onPress={handleAddNewSkill} />
+            <Button
+                title="Add"
+                onPress={handleAddNewSkill}
+            />
 
             <Text style={[styles.title, {
                 marginVertical: 50
@@ -58,14 +71,12 @@ export default function Home() {
                 My Skills
             </Text>
 
-
-
             <FlatList
                 data={mySkills}
-                keyExtractor={item => `${item}-${Math.random()}`}
+                keyExtractor={item => item.id}
                 renderItem={({ item }) => (
                     <SkillCard
-                        skill={item} />
+                        skill={item.name} />
                 )}
             />
 
